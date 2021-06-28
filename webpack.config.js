@@ -16,6 +16,7 @@ module.exports = {
   },
   target: "web",
   resolve: {
+    modules: [path.resolve("./node_modules"), path.resolve("./src")],
     extensions: [".ts", ".tsx", ".js", ".css", ".scss"],
   },
   module: {

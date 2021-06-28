@@ -1,4 +1,4 @@
-import { LocalDay } from "./types"
+import { LocalDay } from "components/Calendar/types"
 
 export const getLocalDayOfWeek = (number: number, short?: boolean) => {
   switch (number) {
