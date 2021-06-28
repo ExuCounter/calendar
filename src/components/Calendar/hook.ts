@@ -2,11 +2,61 @@ import { useState, useEffect } from "react"
 
 // const currentLocalDay = currentDate.getDay()
 
-export const useCalendar = () => {
-  const [year, setYear] = useState<number>(0)
-  const [day, setDay] = useState<number>(0)
-  const [month, setMonth] = useState<number>(0)
+export type SelectedDate = {
+  day: number
+  month: number
+  year: number
+}
+
+export type CalendarState = {
+  setNextMonth: () => void
+  setPreviousMonth: () => void
+  setCurrentYear: (year: number) => void
+  setCurrentMonth: (year: number) => void
+  setSelectedDate: (date: SelectedDate) => void
+  currentYear: number
+  currentMonth: number
+  selectedDay: number
+  selectedMonth: number
+  selectedYear: number
+  numberOfMonthDays: number
+}
+
+export const useCalendar = (): CalendarState => {
+  const [currentYear, setCurrentYear] = useState<number>(0)
+  const [currentMonth, setCurrentMonth] = useState<number>(0)
+  const [selectedDay, setSelectedDay] = useState<number>(0)
+  const [selectedMonth, setSelectedMonth] = useState<number>(0)
+  const [selectedYear, setSelectedYear] = useState<number>(0)
   const [numberOfMonthDays, setNumberOfMonthDays] = useState<number>(0)
+
+  const setSelectedDate = ({ year, month, day }: SelectedDate) => {
+    setSelectedMonth(month)
+    setSelectedYear(year)
+    setSelectedDay(day)
+  }
+
+  const setNextYear = () => {
+    setCurrentYear(year => year + 1)
+    setCurrentMonth(1)
+  }
+
+  const setPreviousYear = () => {
+    setCurrentYear(year => year - 1)
+    setCurrentMonth(12)
+  }
+
+  const setNextMonth = () => {
+    const nextMonth = currentMonth + 1
+    if (nextMonth <= 12) setCurrentMonth(nextMonth)
+    if (nextMonth > 12) setNextYear()
+  }
+
+  const setPreviousMonth = () => {
+    const previousMonth = currentMonth - 1
+    if (previousMonth >= 1) setCurrentMonth(previousMonth)
+    if (previousMonth < 1) setPreviousYear()
+  }
 
   useEffect(() => {
     const currentDate = new Date()
@@ -15,48 +65,32 @@ export const useCalendar = () => {
     const numberOfDays = new Date(currentYear, currentMonth, 0).getDate()
     const currentDayOfMonth = currentDate.getUTCDate()
 
-    setYear(currentYear)
-    setDay(currentDayOfMonth)
-    setMonth(currentMonth)
+    setCurrentYear(currentYear)
+    setCurrentMonth(currentMonth)
     setNumberOfMonthDays(numberOfDays)
-  }, [setYear, setDay, setMonth, setNumberOfMonthDays])
+    setSelectedDate({
+      year: currentYear,
+      month: currentMonth,
+      day: currentDayOfMonth,
+    })
+  }, [setCurrentYear, setCurrentMonth, setNumberOfMonthDays])
 
   useEffect(() => {
-    const numberOfDays = new Date(year, month, 0).getDate()
+    const numberOfDays = new Date(currentYear, currentMonth, 0).getDate()
     setNumberOfMonthDays(numberOfDays)
-  }, [month])
-
-  const setNextYear = () => {
-    setYear(year => year + 1)
-    setMonth(1)
-  }
-
-  const setPreviousYear = () => {
-    setYear(year => year - 1)
-    setMonth(12)
-  }
-
-  const setNextMonth = () => {
-    const nextMonth = month + 1
-    if (nextMonth <= 12) setMonth(nextMonth)
-    if (nextMonth > 12) setNextYear()
-  }
-
-  const setPreviousMonth = () => {
-    const previousMonth = month - 1
-    if (previousMonth >= 1) setMonth(previousMonth)
-    if (previousMonth < 1) setPreviousYear()
-  }
+  }, [currentMonth, currentYear, setNumberOfMonthDays])
 
   return {
-    setYear: (number: number) => setYear(number),
-    setDay: (number: number) => setDay(number),
-    setMonth: (number: number) => setMonth(number),
     setNextMonth,
     setPreviousMonth,
-    year,
-    day,
-    month,
+    setCurrentYear: (year: number) => setCurrentYear(year),
+    setCurrentMonth: (month: number) => setCurrentMonth(month),
+    setSelectedDate: (date: SelectedDate) => setSelectedDate(date),
+    currentYear,
+    currentMonth,
+    selectedDay,
+    selectedMonth,
+    selectedYear,
     numberOfMonthDays,
   }
 }

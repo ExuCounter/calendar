@@ -1,94 +1,128 @@
-import { useState } from "react"
 import { getLocalDayName, getMonthName } from "components/Calendar/utils"
-import { useCalendar } from "components/Calendar/hook"
+import { useCalendar, CalendarState } from "components/Calendar/hook"
 import Button from "react-bootstrap/Button"
+import { ButtonVariant } from "react-bootstrap/types"
 import Row from "react-bootstrap/Row"
+import Column from "react-bootstrap/Col"
 import Container from "react-bootstrap/Container"
 
 const CONTAINER_WIDTH = 300 //px
 const COL_WIDTH = CONTAINER_WIDTH / 7 // 7 days in week
 
 const Navigation = ({
-  year,
-  month,
+  currentYear,
+  currentMonth,
   setNextMonth,
   setPreviousMonth,
-}: {
-  year: number
-  month: number
-  setNextMonth: () => void
-  setPreviousMonth: () => void
-}) => {
+}: Pick<CalendarState, "currentYear" | "currentMonth" | "setNextMonth" | "setPreviousMonth">) => {
   return (
-    <div className="d-flex justify-content-between align-items-center">
-      <div>
-        {year}
-        {getMonthName(month)}
-      </div>
-      <div>
+    <Row className="d-flex justify-content-between align-items-center wrap">
+      <Column>
+        {currentYear}
+        {getMonthName(currentMonth)}
+      </Column>
+      <Column>
         <Button onClick={setPreviousMonth}>{"<"}</Button>
         <Button onClick={setNextMonth}>{">"}</Button>
-      </div>
-    </div>
+      </Column>
+    </Row>
   )
 }
 
-export const LocalDays = () => {
+const LocalDay = ({ day }: { day: number }) => {
+  return <div style={{ width: COL_WIDTH, padding: "5px", textAlign: "center" }}>{getLocalDayName(day, true)}</div>
+}
+
+const LocalDays = () => {
   const localDays = [1, 2, 3, 4, 5, 6, 7] // Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
 
   return (
     <Row className="wrap">
-      {localDays.map(day => (
-        <div style={{ width: COL_WIDTH, padding: "5px", textAlign: "center" }} key={day}>
-          {getLocalDayName(day, true)}
-        </div>
+      {localDays.map((day, idx) => (
+        <LocalDay day={day} key={idx} />
       ))}
     </Row>
   )
 }
 
-export const Days = ({
-  setDay,
-  numberOfMonthDays,
-}: {
-  setDay: (number: number) => void
-  numberOfMonthDays: number
-}) => {
-  const [activeDay, setActiveDay] = useState<number>(0)
-  const days = new Array(numberOfMonthDays).fill(null).map((_, idx) => idx + 1)
+const Day = ({ day, onClick, variant }: { day: number; variant: ButtonVariant; onClick: () => void }) => {
+  return (
+    <Button style={{ width: COL_WIDTH }} variant={variant} onClick={onClick}>
+      {day}
+    </Button>
+  )
+}
 
-  const handleClick = (day: number) => {
-    setActiveDay(day)
-    setDay(day)
-  }
+const Days = ({
+  currentYear,
+  currentMonth,
+  selectedMonth,
+  selectedDay,
+  selectedYear,
+  numberOfMonthDays,
+  setSelectedDate,
+}: Pick<
+  CalendarState,
+  | "currentYear"
+  | "currentMonth"
+  | "selectedMonth"
+  | "selectedDay"
+  | "selectedYear"
+  | "numberOfMonthDays"
+  | "setSelectedDate"
+>) => {
+  const days = Array.from(Array(numberOfMonthDays)).map((_, idx) => idx + 1)
+
+  const getVariant = (day: number) =>
+    selectedYear === currentYear && selectedMonth === currentMonth && selectedDay === day ? "primary" : "info"
 
   return (
     <Row className="wrap">
-      {days.map(day => (
-        <Button
-          style={{ width: COL_WIDTH }}
-          variant={activeDay === day ? "primary" : "info"}
-          key={day}
-          onClick={() => handleClick(day)}
-        >
-          {day}
-        </Button>
+      {days.map((day, idx) => (
+        <Day
+          key={idx}
+          day={day}
+          variant={getVariant(day)}
+          onClick={() => setSelectedDate({ day, month: currentMonth, year: currentYear })}
+        />
       ))}
     </Row>
   )
 }
 
 export const Calendar = () => {
-  const { year, day, month, numberOfMonthDays, setDay, setNextMonth, setPreviousMonth } = useCalendar()
+  const {
+    currentYear,
+    currentMonth,
+    numberOfMonthDays,
+    selectedDay,
+    selectedMonth,
+    selectedYear,
+    setSelectedDate,
+    setNextMonth,
+    setPreviousMonth,
+  } = useCalendar()
 
   return (
-    <Container style={{ width: CONTAINER_WIDTH }}>
-      <Navigation year={year} month={month} setNextMonth={setNextMonth} setPreviousMonth={setPreviousMonth} />
-      <LocalDays />
-      <Days setDay={setDay} numberOfMonthDays={numberOfMonthDays} />
-      <div>year {year}</div>
-      <div>month {month}</div>
-      <div>current day number {day}</div>
+    <Container>
+      <Container style={{ width: CONTAINER_WIDTH }}>
+        <Navigation
+          currentYear={currentYear}
+          currentMonth={currentMonth}
+          setNextMonth={setNextMonth}
+          setPreviousMonth={setPreviousMonth}
+        />
+        <LocalDays />
+        <Days
+          currentYear={currentYear}
+          currentMonth={currentMonth}
+          selectedMonth={selectedMonth}
+          selectedDay={selectedDay}
+          selectedYear={selectedYear}
+          setSelectedDate={setSelectedDate}
+          numberOfMonthDays={numberOfMonthDays}
+        />
+      </Container>
     </Container>
   )
 }
