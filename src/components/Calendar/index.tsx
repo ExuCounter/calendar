@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { getLocalDayOfWeek } from "components/Calendar/utils"
+import { getLocalDayName, getMonthName } from "components/Calendar/utils"
 import { useCalendar } from "components/Calendar/hook"
 import Button from "react-bootstrap/Button"
 import Row from "react-bootstrap/Row"
@@ -8,14 +8,39 @@ import Container from "react-bootstrap/Container"
 const CONTAINER_WIDTH = 300 //px
 const COL_WIDTH = CONTAINER_WIDTH / 7 // 7 days in week
 
+const Navigation = ({
+  year,
+  month,
+  setNextMonth,
+  setPreviousMonth,
+}: {
+  year: number
+  month: number
+  setNextMonth: () => void
+  setPreviousMonth: () => void
+}) => {
+  return (
+    <div className="d-flex justify-content-between align-items-center">
+      <div>
+        {year}
+        {getMonthName(month)}
+      </div>
+      <div>
+        <Button onClick={setPreviousMonth}>{"<"}</Button>
+        <Button onClick={setNextMonth}>{">"}</Button>
+      </div>
+    </div>
+  )
+}
+
 export const LocalDays = () => {
-  const localDays = [0, 1, 2, 3, 4, 5, 6] // Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday
+  const localDays = [1, 2, 3, 4, 5, 6, 7] // Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
 
   return (
-    <Row style={{ flexWrap: "wrap" }}>
+    <Row className="wrap">
       {localDays.map(day => (
         <div style={{ width: COL_WIDTH, padding: "5px", textAlign: "center" }} key={day}>
-          {getLocalDayOfWeek(day, true)}
+          {getLocalDayName(day, true)}
         </div>
       ))}
     </Row>
@@ -26,7 +51,7 @@ export const Days = ({
   setDay,
   numberOfMonthDays,
 }: {
-  setDay: React.Dispatch<React.SetStateAction<number>>
+  setDay: (number: number) => void
   numberOfMonthDays: number
 }) => {
   const [activeDay, setActiveDay] = useState<number>(0)
@@ -38,7 +63,7 @@ export const Days = ({
   }
 
   return (
-    <Row style={{ flexWrap: "wrap" }}>
+    <Row className="wrap">
       {days.map(day => (
         <Button
           style={{ width: COL_WIDTH }}
@@ -54,10 +79,11 @@ export const Days = ({
 }
 
 export const Calendar = () => {
-  const { year, day, month, numberOfMonthDays, setDay } = useCalendar()
+  const { year, day, month, numberOfMonthDays, setDay, setNextMonth, setPreviousMonth } = useCalendar()
 
   return (
     <Container style={{ width: CONTAINER_WIDTH }}>
+      <Navigation year={year} month={month} setNextMonth={setNextMonth} setPreviousMonth={setPreviousMonth} />
       <LocalDays />
       <Days setDay={setDay} numberOfMonthDays={numberOfMonthDays} />
       <div>year {year}</div>

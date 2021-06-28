@@ -19,12 +19,41 @@ export const useCalendar = () => {
     setDay(currentDayOfMonth)
     setMonth(currentMonth)
     setNumberOfMonthDays(numberOfDays)
-  }, [setYear, setDay, setMonth])
+  }, [setYear, setDay, setMonth, setNumberOfMonthDays])
+
+  useEffect(() => {
+    const numberOfDays = new Date(year, month, 0).getDate()
+    setNumberOfMonthDays(numberOfDays)
+  }, [month])
+
+  const setNextYear = () => {
+    setYear(year => year + 1)
+    setMonth(1)
+  }
+
+  const setPreviousYear = () => {
+    setYear(year => year - 1)
+    setMonth(12)
+  }
+
+  const setNextMonth = () => {
+    const nextMonth = month + 1
+    if (nextMonth <= 12) setMonth(nextMonth)
+    if (nextMonth > 12) setNextYear()
+  }
+
+  const setPreviousMonth = () => {
+    const previousMonth = month - 1
+    if (previousMonth >= 1) setMonth(previousMonth)
+    if (previousMonth < 1) setPreviousYear()
+  }
 
   return {
-    setYear,
-    setDay,
-    setMonth,
+    setYear: (number: number) => setYear(number),
+    setDay: (number: number) => setDay(number),
+    setMonth: (number: number) => setMonth(number),
+    setNextMonth,
+    setPreviousMonth,
     year,
     day,
     month,
