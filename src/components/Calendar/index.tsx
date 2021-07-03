@@ -1,5 +1,6 @@
 import { getLocalDayName, getMonthName } from "components/Calendar/utils"
 import { useCalendar, CalendarState } from "components/Calendar/useCalendar"
+import { useMonth } from "components/Calendar/useMonth"
 import LeftArrowIcon from "misc/icons/left-arrow.svg"
 import RightArrowIcon from "misc/icons/right-arrow.svg"
 import "components/Calendar/index.scss"
@@ -53,32 +54,28 @@ const Days = ({
   selectedMonth,
   selectedDay,
   selectedYear,
-  numberOfMonthDays,
   handleAction,
 }: Pick<
   CalendarState,
-  | "showingYear"
-  | "showingMonth"
-  | "selectedMonth"
-  | "selectedDay"
-  | "selectedYear"
-  | "numberOfMonthDays"
-  | "handleAction"
+  "showingYear" | "showingMonth" | "selectedMonth" | "selectedDay" | "selectedYear" | "handleAction"
 >) => {
-  const previousMonthStartLocalDay = new Date(showingYear, showingMonth - 1, 1).getDay()
-  const previousMonthNumberOfDays = new Date(showingYear, showingMonth - 1, 0).getDate()
+  const { countOfDays: showingMonthNumberOfDays } = useMonth(showingMonth, showingYear)
+  const { countOfDays: previousMonthCountOfDays, startLocalDay: previousMonthStartLocalDay } = useMonth(
+    showingMonth - 1,
+    showingYear
+  )
 
   const getDays = () => {
     const daysInPreviousMonth = Array.from(Array(previousMonthStartLocalDay)).map((_, idx) => {
-      return { number: previousMonthNumberOfDays - previousMonthStartLocalDay + idx + 1, position: "previous" }
+      return { number: previousMonthCountOfDays - previousMonthStartLocalDay + idx + 1, position: "previous" }
     })
-    const daysInCurrentMonth = Array.from(Array(numberOfMonthDays)).map((_, idx) => {
+    const daysInCurrentMonth = Array.from(Array(showingMonthNumberOfDays)).map((_, idx) => {
       return { number: idx + 1, position: "current" }
     })
     const daysInNextMonth = Array.from(
       new Array(
-        TOTAL_OF_DAYS_PER_SCREEN - numberOfMonthDays - previousMonthStartLocalDay > 0
-          ? TOTAL_OF_DAYS_PER_SCREEN - numberOfMonthDays - previousMonthStartLocalDay
+        TOTAL_OF_DAYS_PER_SCREEN - showingMonthNumberOfDays - previousMonthStartLocalDay > 0
+          ? TOTAL_OF_DAYS_PER_SCREEN - showingMonthNumberOfDays - previousMonthStartLocalDay
           : 0
       )
     ).map((_, idx) => {
@@ -140,8 +137,7 @@ const Days = ({
 }
 
 export const Calendar = () => {
-  const { showingYear, showingMonth, numberOfMonthDays, selectedDay, selectedMonth, selectedYear, handleAction } =
-    useCalendar()
+  const { showingYear, showingMonth, selectedDay, selectedMonth, selectedYear, handleAction } = useCalendar()
 
   return (
     <div className="calendar">
@@ -154,7 +150,6 @@ export const Calendar = () => {
           selectedMonth={selectedMonth}
           selectedDay={selectedDay}
           selectedYear={selectedYear}
-          numberOfMonthDays={numberOfMonthDays}
           handleAction={handleAction}
         />
       </div>

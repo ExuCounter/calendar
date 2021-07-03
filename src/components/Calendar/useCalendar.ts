@@ -21,7 +21,6 @@ export type CalendarState = {
   selectedDay: number
   selectedMonth: number
   selectedYear: number
-  numberOfMonthDays: number
 }
 
 export const useCalendar = (): CalendarState => {
@@ -30,7 +29,6 @@ export const useCalendar = (): CalendarState => {
   const [selectedDay, setSelectedDay] = useState<number>(0)
   const [selectedMonth, setSelectedMonth] = useState<number>(0)
   const [selectedYear, setSelectedYear] = useState<number>(0)
-  const [numberOfMonthDays, setNumberOfMonthDays] = useState<number>(0)
 
   const setSelectedDate = ({ year, month, day }: SelectedDate) => {
     if (month > 12) {
@@ -87,18 +85,12 @@ export const useCalendar = (): CalendarState => {
 
     setShowingYear(currentYear)
     setShowingMonth(showingMonth)
-    setNumberOfMonthDays(numberOfDays)
     setSelectedDate({
       year: currentYear,
       month: showingMonth,
       day: currentDayOfMonth,
     })
-  }, [setShowingYear, setShowingMonth, setNumberOfMonthDays])
-
-  useEffect(() => {
-    const numberOfDays = new Date(showingYear, showingMonth, 0).getDate()
-    setNumberOfMonthDays(numberOfDays)
-  }, [showingMonth, showingYear, setNumberOfMonthDays])
+  }, [setShowingYear, setShowingMonth])
 
   const handleAction = (action: Actions) => {
     switch (action.action) {
@@ -122,6 +114,5 @@ export const useCalendar = (): CalendarState => {
     selectedDay,
     selectedMonth,
     selectedYear,
-    numberOfMonthDays,
   }
 }
