@@ -1,13 +1,12 @@
 import { getLocalDayName, getMonthName } from "components/Calendar/utils"
 import { useCalendar, CalendarState } from "components/Calendar/useCalendar"
-import { useMonth } from "components/Calendar/useMonth"
+import { useShowingDays, DayPosition } from "components/Calendar/useShowingDays"
 import LeftArrowIcon from "misc/icons/left-arrow.svg"
 import RightArrowIcon from "misc/icons/right-arrow.svg"
 import "components/Calendar/index.scss"
 
 const CONTAINER_WIDTH = 244 //px
 const COL_WIDTH = CONTAINER_WIDTH / 7 // 7 days in week
-const TOTAL_OF_DAYS_PER_SCREEN = 42 // 42 days per screen
 
 const Navigation = ({
   showingYear,
@@ -41,13 +40,6 @@ const LocalDays = () => (
   </div>
 )
 
-type DayPosition = "previous" | "current" | "next"
-
-type DaysType = {
-  number: number
-  position: DayPosition
-}[]
-
 const Days = ({
   showingYear,
   showingMonth,
@@ -59,42 +51,13 @@ const Days = ({
   CalendarState,
   "showingYear" | "showingMonth" | "selectedMonth" | "selectedDay" | "selectedYear" | "handleAction"
 >) => {
-  const { countOfDays: showingMonthNumberOfDays } = useMonth(showingMonth, showingYear)
-  const { countOfDays: previousMonthCountOfDays, startLocalDay: previousMonthStartLocalDay } = useMonth(
-    showingMonth - 1,
-    showingYear
-  )
+  const showingDays = useShowingDays({ showingYear, showingMonth })
 
-  const getDays = () => {
-    const daysInPreviousMonth = Array.from(Array(previousMonthStartLocalDay)).map((_, idx) => {
-      return { number: previousMonthCountOfDays - previousMonthStartLocalDay + idx + 1, position: "previous" }
-    })
-    const daysInCurrentMonth = Array.from(Array(showingMonthNumberOfDays)).map((_, idx) => {
-      return { number: idx + 1, position: "current" }
-    })
-    const daysInNextMonth = Array.from(
-      new Array(
-        TOTAL_OF_DAYS_PER_SCREEN - showingMonthNumberOfDays - previousMonthStartLocalDay > 0
-          ? TOTAL_OF_DAYS_PER_SCREEN - showingMonthNumberOfDays - previousMonthStartLocalDay
-          : 0
-      )
-    ).map((_, idx) => {
-      return { number: idx + 1, position: "next" }
-    })
+  const getClassName = ({ position, day }: { position: DayPosition; day: number }) => {
+    const isActive = showingYear === selectedYear && showingMonth === selectedMonth && selectedDay === day
+    const isCurrentPosition = position === "current"
 
-    return [...daysInPreviousMonth, ...daysInCurrentMonth, ...daysInNextMonth] as DaysType
-  }
-
-  const getClassName = (day: number, position: DayPosition) => {
-    let className = `days-item ${position} `
-
-    if (position === "current") {
-      if (showingYear === selectedYear && showingMonth === selectedMonth && selectedDay === day) {
-        return (className += "active")
-      }
-    }
-
-    return className
+    return `days-item ${position} ${isActive && isCurrentPosition ? "active" : ""}`
   }
 
   const getHandler = ({ position, day }: { position: DayPosition; day: number }) => {
@@ -116,18 +79,13 @@ const Days = ({
     }
   }
 
-  const daysArray = getDays()
-
   return (
     <div className="days-container">
-      {daysArray.map((day, idx) => {
+      {showingDays.map(({ day, position }, idx) => {
         return (
           <div key={idx} className="days-item__container" style={{ minWidth: COL_WIDTH, width: COL_WIDTH }}>
-            <button
-              className={getClassName(day.number, day.position)}
-              onClick={getHandler({ position: day.position, day: day.number })}
-            >
-              {day.number}
+            <button className={getClassName({ position, day })} onClick={getHandler({ position, day })}>
+              {day}
             </button>
           </div>
         )
