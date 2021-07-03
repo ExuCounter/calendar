@@ -1,20 +1,15 @@
 import { useState, useEffect } from "react"
 import { ActionWithPayload, ActionWithoutPayload } from "components/shared/actions"
+import { DateType } from "components/Calendar/types"
 
 type Actions =
-  | ActionWithPayload<"setSelectedDate", SelectedDate>
+  | ActionWithPayload<"setSelectedDate", DateType>
   | ActionWithPayload<"setShowingYear", number>
   | ActionWithPayload<"setShowingMonth", number>
   | ActionWithoutPayload<"setNextShowingMonth">
   | ActionWithoutPayload<"setPreviousShowingMonth">
 
-export type SelectedDate = {
-  day: number
-  month: number
-  year: number
-}
-
-export type CalendarState = {
+export type CalendarHookState = {
   handleAction: (action: Actions) => void
   showingYear: number
   showingMonth: number
@@ -23,14 +18,14 @@ export type CalendarState = {
   selectedYear: number
 }
 
-export const useCalendar = (): CalendarState => {
+export const useCalendar = (): CalendarHookState => {
   const [showingYear, setShowingYear] = useState<number>(0)
   const [showingMonth, setShowingMonth] = useState<number>(0)
   const [selectedDay, setSelectedDay] = useState<number>(0)
   const [selectedMonth, setSelectedMonth] = useState<number>(0)
   const [selectedYear, setSelectedYear] = useState<number>(0)
 
-  const setSelectedDate = ({ year, month, day }: SelectedDate) => {
+  const setSelectedDate = ({ year, month, day }: DateType) => {
     if (month > 12) {
       setNextSelectedYear()
       setNextShowingMonth()
@@ -80,7 +75,6 @@ export const useCalendar = (): CalendarState => {
     const currentDate = new Date()
     const currentYear = currentDate.getFullYear()
     const showingMonth = currentDate.getMonth() + 1
-    const numberOfDays = new Date(currentYear, showingMonth, 0).getDate()
     const currentDayOfMonth = currentDate.getUTCDate()
 
     setShowingYear(currentYear)

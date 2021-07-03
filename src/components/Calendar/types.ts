@@ -22,3 +22,9 @@ export enum Month {
   November,
   December,
 }
+
+export type DateType = {
+  day: number
+  month: number
+  year: number
+}

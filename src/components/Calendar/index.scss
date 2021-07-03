@@ -12,6 +12,16 @@ body {
 
 .calendar {
   padding: 0.5rem;
+  position: absolute;
+  background-color: #fff;
+  &-placement-left {
+    transform: translateY(100%);
+    bottom: -10px;
+    left: 0;
+  }
+  &-container {
+    position: relative;
+  }
   &-navigation {
     display: flex;
     justify-content: space-between;

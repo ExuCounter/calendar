@@ -1,8 +1,12 @@
+import React, { PropsWithChildren } from "react"
+import { CalendarContextProvider } from "components/Calendar/CalendarContext"
 import { getLocalDayName, getMonthName } from "components/Calendar/utils"
-import { useCalendar, CalendarState } from "components/Calendar/hooks/useCalendar"
+import { useCalendar, CalendarHookState } from "components/Calendar/hooks/useCalendar"
 import { useShowingDays, DayPosition } from "components/Calendar/hooks/useShowingDays"
 import LeftArrowIcon from "misc/icons/left-arrow.svg"
 import RightArrowIcon from "misc/icons/right-arrow.svg"
+import { isFunction } from "components/shared/utils"
+import { DateType } from "components/Calendar/types"
 import "components/Calendar/index.scss"
 
 const CONTAINER_WIDTH = 244 //px
@@ -12,7 +16,7 @@ const Navigation = ({
   showingYear,
   showingMonth,
   handleAction,
-}: Pick<CalendarState, "showingYear" | "showingMonth" | "handleAction">) => (
+}: Pick<CalendarHookState, "showingYear" | "showingMonth" | "handleAction">) => (
   <div className="calendar-navigation">
     <div className="flex">
       <span className="calendar-navigation__month">{getMonthName(showingMonth)}</span>
@@ -46,11 +50,12 @@ const Days = ({
   selectedMonth,
   selectedDay,
   selectedYear,
+  onClose,
   handleAction,
 }: Pick<
-  CalendarState,
+  CalendarHookState,
   "showingYear" | "showingMonth" | "selectedMonth" | "selectedDay" | "selectedYear" | "handleAction"
->) => {
+> & { onClose: () => void }) => {
   const showingDays = useShowingDays({ showingYear, showingMonth })
 
   const getClassName = ({ position, day }: { position: DayPosition; day: number }) => {
@@ -84,7 +89,13 @@ const Days = ({
       {showingDays.map(({ day, position }, idx) => {
         return (
           <div key={idx} className="days-item__container" style={{ minWidth: COL_WIDTH, width: COL_WIDTH }}>
-            <button className={getClassName({ position, day })} onClick={getHandler({ position, day })}>
+            <button
+              className={getClassName({ position, day })}
+              onClick={() => {
+                getHandler({ position, day })()
+                onClose()
+              }}
+            >
               {day}
             </button>
           </div>
@@ -94,26 +105,38 @@ const Days = ({
   )
 }
 
-export const Calendar = () => {
+type CalendarProps = PropsWithChildren<{
+  show: boolean
+  onClose: () => void
+  children: ((date: DateType) => React.ReactElement) | React.ReactNode
+}>
+
+export const Calendar = ({ show = false, onClose, children }: CalendarProps) => {
   const { showingYear, showingMonth, selectedDay, selectedMonth, selectedYear, handleAction } = useCalendar()
+  const date = { day: selectedDay, month: selectedMonth, year: selectedYear }
 
   return (
-    <div className="calendar">
-      <div style={{ width: CONTAINER_WIDTH }}>
-        <Navigation showingYear={showingYear} showingMonth={showingMonth} handleAction={handleAction} />
-        <LocalDays />
-        <Days
-          showingYear={showingYear}
-          showingMonth={showingMonth}
-          selectedMonth={selectedMonth}
-          selectedDay={selectedDay}
-          selectedYear={selectedYear}
-          handleAction={handleAction}
-        />
-      </div>
-      <div>
-        {selectedDay} {getMonthName(selectedMonth)} {selectedYear}
-      </div>
+    <div className="calendar-container">
+      <CalendarContextProvider value={{ date }}>
+        <div className="calendar-children">{children && isFunction(children) ? children({ ...date }) : children}</div>
+        {show && (
+          <div className="calendar calendar-placement-left">
+            <div style={{ width: CONTAINER_WIDTH }}>
+              <Navigation showingYear={showingYear} showingMonth={showingMonth} handleAction={handleAction} />
+              <LocalDays />
+              <Days
+                showingYear={showingYear}
+                showingMonth={showingMonth}
+                selectedMonth={selectedMonth}
+                selectedDay={selectedDay}
+                selectedYear={selectedYear}
+                handleAction={handleAction}
+                onClose={onClose}
+              />
+            </div>
+          </div>
+        )}
+      </CalendarContextProvider>
     </div>
   )
 }
