@@ -1,4 +1,12 @@
 import { useState, useEffect } from "react"
+import { ActionWithPayload, ActionWithoutPayload } from "components/shared/actions"
+
+type Actions =
+  | ActionWithPayload<"setSelectedDate", SelectedDate>
+  | ActionWithPayload<"setShowingYear", number>
+  | ActionWithPayload<"setShowingMonth", number>
+  | ActionWithoutPayload<"setNextShowingMonth">
+  | ActionWithoutPayload<"setPreviousShowingMonth">
 
 export type SelectedDate = {
   day: number
@@ -7,11 +15,7 @@ export type SelectedDate = {
 }
 
 export type CalendarState = {
-  setNextShowingMonth: () => void
-  setPreviousShowingMonth: () => void
-  setShowingYear: (year: number) => void
-  setShowingMonth: (year: number) => void
-  setSelectedDate: (date: SelectedDate) => void
+  handleAction: (action: Actions) => void
   showingYear: number
   showingMonth: number
   selectedDay: number
@@ -96,12 +100,23 @@ export const useCalendar = (): CalendarState => {
     setNumberOfMonthDays(numberOfDays)
   }, [showingMonth, showingYear, setNumberOfMonthDays])
 
+  const handleAction = (action: Actions) => {
+    switch (action.action) {
+      case "setSelectedDate":
+        return setSelectedDate(action.payload)
+      case "setShowingYear":
+        return setShowingYear(action.payload)
+      case "setShowingMonth":
+        return setShowingMonth(action.payload)
+      case "setNextShowingMonth":
+        return setNextShowingMonth()
+      case "setPreviousShowingMonth":
+        return setPreviousShowingMonth()
+    }
+  }
+
   return {
-    setNextShowingMonth,
-    setPreviousShowingMonth,
-    setShowingYear: (year: number) => setShowingYear(year),
-    setShowingMonth: (month: number) => setShowingMonth(month),
-    setSelectedDate: (date: SelectedDate) => setSelectedDate(date),
+    handleAction,
     showingYear,
     showingMonth,
     selectedDay,
