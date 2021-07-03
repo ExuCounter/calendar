@@ -78,40 +78,35 @@ const Days = ({
   const previousMonthStartLocalDay = new Date(currentYear, currentMonth - 1, 1).getDay()
   const previousMonthNumberOfDays = new Date(currentYear, currentMonth - 1, 0).getDate()
 
-  const daysInPreviousMonth = Array.from(Array(previousMonthStartLocalDay)).map((_, idx) => {
-    return { number: previousMonthNumberOfDays - previousMonthStartLocalDay + idx + 1, position: "previous" }
-  }) as DaysType
-  const daysInCurrentMonth = Array.from(Array(numberOfMonthDays)).map((_, idx) => {
-    return { number: idx + 1, position: "current" }
-  }) as DaysType
-  const daysInNextMonth = Array.from(
-    new Array(
-      TOTAL_OF_DAYS_PER_SCREEN - numberOfMonthDays - previousMonthStartLocalDay > 0
-        ? TOTAL_OF_DAYS_PER_SCREEN - numberOfMonthDays - previousMonthStartLocalDay
-        : 0
-    )
-  ).map((_, idx) => {
-    return { number: idx + 1, position: "next" }
-  }) as DaysType
+  const getDays = () => {
+    const daysInPreviousMonth = Array.from(Array(previousMonthStartLocalDay)).map((_, idx) => {
+      return { number: previousMonthNumberOfDays - previousMonthStartLocalDay + idx + 1, position: "previous" }
+    })
+    const daysInCurrentMonth = Array.from(Array(numberOfMonthDays)).map((_, idx) => {
+      return { number: idx + 1, position: "current" }
+    })
+    const daysInNextMonth = Array.from(
+      new Array(
+        TOTAL_OF_DAYS_PER_SCREEN - numberOfMonthDays - previousMonthStartLocalDay > 0
+          ? TOTAL_OF_DAYS_PER_SCREEN - numberOfMonthDays - previousMonthStartLocalDay
+          : 0
+      )
+    ).map((_, idx) => {
+      return { number: idx + 1, position: "next" }
+    })
 
-  const daysArray = [...daysInPreviousMonth, ...daysInCurrentMonth, ...daysInNextMonth]
+    return [...daysInPreviousMonth, ...daysInCurrentMonth, ...daysInNextMonth] as DaysType
+  }
 
   const getClassName = (day: number, position: DayPosition) => {
     let className = `days-item ${position} `
-    switch (position) {
-      case "previous":
-        if (selectedDay === day && currentMonth === selectedMonth + 1) {
-          className += "active"
-        }
-      case "current":
-        if (currentYear === selectedYear && currentMonth === selectedMonth && selectedDay === day) {
-          className += "active"
-        }
-      case "next":
-        if (selectedDay === day && currentMonth === selectedMonth - 1) {
-          className += "active"
-        }
+
+    if (position === "current") {
+      if (currentYear === selectedYear && currentMonth === selectedMonth && selectedDay === day) {
+        return (className += "active")
+      }
     }
+
     return className
   }
 
@@ -133,6 +128,8 @@ const Days = ({
         }
     }
   }
+
+  const daysArray = getDays()
 
   return (
     <div className="days-container">
