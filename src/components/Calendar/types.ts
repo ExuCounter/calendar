@@ -33,13 +33,13 @@ export type DayNumberType =
   | 31
 
 export enum LocalDay {
-  Monday = 1,
+  Sunday,
+  Monday,
   Tuesday,
   Wednesday,
   Thursday,
   Friday,
   Saturday,
-  Sunday,
 }
 
 export enum Month {

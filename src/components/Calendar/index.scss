@@ -1,0 +1,87 @@
+* {
+  font-family: "Roboto", sans-serif;
+}
+
+html {
+  font-size: 10px;
+}
+
+body {
+  font-size: 100%;
+}
+
+.calendar {
+  &-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    font-weight: 500;
+    color: #3c4043;
+    padding: 0 1rem;
+    margin-bottom: 0.7rem;
+    &__year,
+    &__month {
+      font-size: 1.3rem;
+    }
+    &__month {
+      margin-right: 0.5rem;
+    }
+    &__btn {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      outline: none;
+    }
+  }
+}
+
+.local-days {
+  display: flex;
+  &__name {
+    padding: 0.5rem;
+    text-align: center;
+    color: #70757a;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+}
+
+.days {
+  &-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &-item {
+    text-align: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 2.4rem;
+    height: 2.4rem;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 100ms linear;
+    outline: none;
+    &__container {
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+    }
+    &.active {
+      background-color: #d2e3fc;
+      color: #185abc !important;
+    }
+    &.previous,
+    &.next {
+      color: #70757a;
+    }
+    &.current {
+      color: #3c4043;
+    }
+    &:hover {
+      background-color: #f1f3f4;
+    }
+  }
+}
