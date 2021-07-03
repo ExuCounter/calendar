@@ -1,6 +1,6 @@
 import { getLocalDayName, getMonthName } from "components/Calendar/utils"
-import { useCalendar, CalendarState } from "components/Calendar/useCalendar"
-import { useShowingDays, DayPosition } from "components/Calendar/useShowingDays"
+import { useCalendar, CalendarState } from "components/Calendar/hooks/useCalendar"
+import { useShowingDays, DayPosition } from "components/Calendar/hooks/useShowingDays"
 import LeftArrowIcon from "misc/icons/left-arrow.svg"
 import RightArrowIcon from "misc/icons/right-arrow.svg"
 import "components/Calendar/index.scss"
