@@ -1,30 +1,30 @@
 import { getLocalDayName, getMonthName } from "components/Calendar/utils"
 import { useCalendar, CalendarState } from "components/Calendar/useCalendar"
-import "components/Calendar/index.scss"
 import LeftArrowIcon from "misc/icons/left-arrow.svg"
 import RightArrowIcon from "misc/icons/right-arrow.svg"
+import "components/Calendar/index.scss"
 
 const CONTAINER_WIDTH = 244 //px
 const COL_WIDTH = CONTAINER_WIDTH / 7 // 7 days in week
 const TOTAL_OF_DAYS_PER_SCREEN = 42 // 42 days per screen
 
 const Navigation = ({
-  currentYear,
-  currentMonth,
-  setNextMonth,
-  setPreviousMonth,
-}: Pick<CalendarState, "currentYear" | "currentMonth" | "setNextMonth" | "setPreviousMonth">) => {
+  showingYear,
+  showingMonth,
+  setNextShowingMonth,
+  setPreviousShowingMonth,
+}: Pick<CalendarState, "showingYear" | "showingMonth" | "setNextShowingMonth" | "setPreviousShowingMonth">) => {
   return (
     <div className="calendar-navigation">
       <div className="flex">
-        <span className="calendar-navigation__month">{getMonthName(currentMonth)}</span>
-        <span className="calendar-navigation__year">{currentYear}</span>
+        <span className="calendar-navigation__month">{getMonthName(showingMonth)}</span>
+        <span className="calendar-navigation__year">{showingYear}</span>
       </div>
       <div className="flex">
-        <button className="calendar-navigation__btn" onClick={setPreviousMonth}>
+        <button className="calendar-navigation__btn" onClick={setPreviousShowingMonth}>
           <LeftArrowIcon />
         </button>
-        <button className="calendar-navigation__btn" onClick={setNextMonth}>
+        <button className="calendar-navigation__btn" onClick={setNextShowingMonth}>
           <RightArrowIcon />
         </button>
       </div>
@@ -54,29 +54,29 @@ type DaysType = {
 }[]
 
 const Days = ({
-  currentYear,
-  currentMonth,
+  showingYear,
+  showingMonth,
   selectedMonth,
   selectedDay,
   selectedYear,
   numberOfMonthDays,
   setSelectedDate,
-  setNextMonth,
-  setPreviousMonth,
+  setNextShowingMonth,
+  setPreviousShowingMonth,
 }: Pick<
   CalendarState,
-  | "currentYear"
-  | "currentMonth"
+  | "showingYear"
+  | "showingMonth"
   | "selectedMonth"
   | "selectedDay"
   | "selectedYear"
   | "numberOfMonthDays"
   | "setSelectedDate"
-  | "setNextMonth"
-  | "setPreviousMonth"
+  | "setNextShowingMonth"
+  | "setPreviousShowingMonth"
 >) => {
-  const previousMonthStartLocalDay = new Date(currentYear, currentMonth - 1, 1).getDay()
-  const previousMonthNumberOfDays = new Date(currentYear, currentMonth - 1, 0).getDate()
+  const previousMonthStartLocalDay = new Date(showingYear, showingMonth - 1, 1).getDay()
+  const previousMonthNumberOfDays = new Date(showingYear, showingMonth - 1, 0).getDate()
 
   const getDays = () => {
     const daysInPreviousMonth = Array.from(Array(previousMonthStartLocalDay)).map((_, idx) => {
@@ -102,7 +102,7 @@ const Days = ({
     let className = `days-item ${position} `
 
     if (position === "current") {
-      if (currentYear === selectedYear && currentMonth === selectedMonth && selectedDay === day) {
+      if (showingYear === selectedYear && showingMonth === selectedMonth && selectedDay === day) {
         return (className += "active")
       }
     }
@@ -114,17 +114,17 @@ const Days = ({
     switch (position) {
       case "previous":
         return () => {
-          setSelectedDate({ day, month: currentMonth - 1, year: currentYear })
-          setPreviousMonth()
+          setSelectedDate({ day, month: showingMonth - 1, year: showingYear })
+          setPreviousShowingMonth()
         }
       case "current":
         return () => {
-          setSelectedDate({ day, month: currentMonth, year: currentYear })
+          setSelectedDate({ day, month: showingMonth, year: showingYear })
         }
       case "next":
         return () => {
-          setSelectedDate({ day, month: currentMonth + 1, year: currentYear })
-          setNextMonth()
+          setSelectedDate({ day, month: showingMonth + 1, year: showingYear })
+          setNextShowingMonth()
         }
     }
   }
@@ -151,37 +151,37 @@ const Days = ({
 
 export const Calendar = () => {
   const {
-    currentYear,
-    currentMonth,
+    showingYear,
+    showingMonth,
     numberOfMonthDays,
     selectedDay,
     selectedMonth,
     selectedYear,
     setSelectedDate,
-    setNextMonth,
-    setPreviousMonth,
+    setNextShowingMonth,
+    setPreviousShowingMonth,
   } = useCalendar()
 
   return (
     <div className="calendar">
       <div style={{ width: CONTAINER_WIDTH }}>
         <Navigation
-          currentYear={currentYear}
-          currentMonth={currentMonth}
-          setNextMonth={setNextMonth}
-          setPreviousMonth={setPreviousMonth}
+          showingYear={showingYear}
+          showingMonth={showingMonth}
+          setNextShowingMonth={setNextShowingMonth}
+          setPreviousShowingMonth={setPreviousShowingMonth}
         />
         <LocalDays />
         <Days
-          currentYear={currentYear}
-          currentMonth={currentMonth}
+          showingYear={showingYear}
+          showingMonth={showingMonth}
           selectedMonth={selectedMonth}
           selectedDay={selectedDay}
           selectedYear={selectedYear}
           setSelectedDate={setSelectedDate}
           numberOfMonthDays={numberOfMonthDays}
-          setNextMonth={setNextMonth}
-          setPreviousMonth={setPreviousMonth}
+          setNextShowingMonth={setNextShowingMonth}
+          setPreviousShowingMonth={setPreviousShowingMonth}
         />
       </div>
       <div>

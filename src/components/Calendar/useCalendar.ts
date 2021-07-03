@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react"
 
-// const currentLocalDay = currentDate.getDay()
-
 export type SelectedDate = {
   day: number
   month: number
@@ -9,13 +7,13 @@ export type SelectedDate = {
 }
 
 export type CalendarState = {
-  setNextMonth: () => void
-  setPreviousMonth: () => void
-  setCurrentYear: (year: number) => void
-  setCurrentMonth: (year: number) => void
+  setNextShowingMonth: () => void
+  setPreviousShowingMonth: () => void
+  setShowingYear: (year: number) => void
+  setShowingMonth: (year: number) => void
   setSelectedDate: (date: SelectedDate) => void
-  currentYear: number
-  currentMonth: number
+  showingYear: number
+  showingMonth: number
   selectedDay: number
   selectedMonth: number
   selectedYear: number
@@ -23,8 +21,8 @@ export type CalendarState = {
 }
 
 export const useCalendar = (): CalendarState => {
-  const [currentYear, setCurrentYear] = useState<number>(0)
-  const [currentMonth, setCurrentMonth] = useState<number>(0)
+  const [showingYear, setShowingYear] = useState<number>(0)
+  const [showingMonth, setShowingMonth] = useState<number>(0)
   const [selectedDay, setSelectedDay] = useState<number>(0)
   const [selectedMonth, setSelectedMonth] = useState<number>(0)
   const [selectedYear, setSelectedYear] = useState<number>(0)
@@ -33,9 +31,9 @@ export const useCalendar = (): CalendarState => {
   const setSelectedDate = ({ year, month, day }: SelectedDate) => {
     if (month > 12) {
       setNextSelectedYear()
-      setNextMonth()
+      setNextShowingMonth()
     } else if (month < 1) {
-      setPreviousMonth()
+      setPreviousShowingMonth()
       setPreviousSelectedYear()
     } else {
       setSelectedMonth(month)
@@ -51,61 +49,61 @@ export const useCalendar = (): CalendarState => {
 
   const setPreviousSelectedYear = () => {
     setSelectedYear(year => year - 1)
-    setCurrentMonth(12)
+    setShowingMonth(12)
   }
 
-  const setNextCurrentYear = () => {
-    setCurrentYear(year => year + 1)
-    setCurrentMonth(1)
+  const setNextShowingYear = () => {
+    setShowingYear(year => year + 1)
+    setShowingMonth(1)
   }
 
-  const setPreviousCurrentYear = () => {
-    setCurrentYear(year => year - 1)
-    setCurrentMonth(12)
+  const setPreviousShowingYear = () => {
+    setShowingYear(year => year - 1)
+    setShowingMonth(12)
   }
 
-  const setNextMonth = () => {
-    const nextMonth = currentMonth + 1
-    if (nextMonth <= 12) setCurrentMonth(nextMonth)
-    if (nextMonth > 12) setNextCurrentYear()
+  const setNextShowingMonth = () => {
+    const nextMonth = showingMonth + 1
+    if (nextMonth <= 12) setShowingMonth(nextMonth)
+    if (nextMonth > 12) setNextShowingYear()
   }
 
-  const setPreviousMonth = () => {
-    const previousMonth = currentMonth - 1
-    if (previousMonth >= 1) setCurrentMonth(previousMonth)
-    if (previousMonth < 1) setPreviousCurrentYear()
+  const setPreviousShowingMonth = () => {
+    const previousMonth = showingMonth - 1
+    if (previousMonth >= 1) setShowingMonth(previousMonth)
+    if (previousMonth < 1) setPreviousShowingYear()
   }
 
   useEffect(() => {
     const currentDate = new Date()
     const currentYear = currentDate.getFullYear()
-    const currentMonth = currentDate.getMonth() + 1
-    const numberOfDays = new Date(currentYear, currentMonth, 0).getDate()
+    const showingMonth = currentDate.getMonth() + 1
+    const numberOfDays = new Date(currentYear, showingMonth, 0).getDate()
     const currentDayOfMonth = currentDate.getUTCDate()
 
-    setCurrentYear(currentYear)
-    setCurrentMonth(currentMonth)
+    setShowingYear(currentYear)
+    setShowingMonth(showingMonth)
     setNumberOfMonthDays(numberOfDays)
     setSelectedDate({
       year: currentYear,
-      month: currentMonth,
+      month: showingMonth,
       day: currentDayOfMonth,
     })
-  }, [setCurrentYear, setCurrentMonth, setNumberOfMonthDays])
+  }, [setShowingYear, setShowingMonth, setNumberOfMonthDays])
 
   useEffect(() => {
-    const numberOfDays = new Date(currentYear, currentMonth, 0).getDate()
+    const numberOfDays = new Date(showingYear, showingMonth, 0).getDate()
     setNumberOfMonthDays(numberOfDays)
-  }, [currentMonth, currentYear, setNumberOfMonthDays])
+  }, [showingMonth, showingYear, setNumberOfMonthDays])
 
   return {
-    setNextMonth,
-    setPreviousMonth,
-    setCurrentYear: (year: number) => setCurrentYear(year),
-    setCurrentMonth: (month: number) => setCurrentMonth(month),
+    setNextShowingMonth,
+    setPreviousShowingMonth,
+    setShowingYear: (year: number) => setShowingYear(year),
+    setShowingMonth: (month: number) => setShowingMonth(month),
     setSelectedDate: (date: SelectedDate) => setSelectedDate(date),
-    currentYear,
-    currentMonth,
+    showingYear,
+    showingMonth,
     selectedDay,
     selectedMonth,
     selectedYear,

@@ -4,14 +4,14 @@ const getMonthCountOfDays = (month: number, year: number) => new Date(year, mont
 
 export const useMonth = (month: number, year: number) => {
   const [previousMonthCountOfDays, setPreviousMonthCountOfDays] = useState<number>(0)
-  const [currentMonthCountOfDays, setCurrentMonthCountOfDays] = useState<number>(0)
+  const [currentMonthCountOfDays, setShowingMonthCountOfDays] = useState<number>(0)
   const [nextMonthCountOfDays, setNextMonthCountOfDays] = useState<number>(0)
 
   useEffect(() => {
     setPreviousMonthCountOfDays(getMonthCountOfDays(month - 1, year))
-    setCurrentMonthCountOfDays(getMonthCountOfDays(month, year))
+    setShowingMonthCountOfDays(getMonthCountOfDays(month, year))
     setNextMonthCountOfDays(getMonthCountOfDays(month + 1, year))
-  }, [currentMonthCountOfDays, setCurrentMonthCountOfDays, setNextMonthCountOfDays, setPreviousMonthCountOfDays])
+  }, [currentMonthCountOfDays, setShowingMonthCountOfDays, setNextMonthCountOfDays, setPreviousMonthCountOfDays])
 
   return {
     previousMonthCountOfDays,
