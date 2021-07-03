@@ -1,9 +1,12 @@
 import { getLocalDayName, getMonthName } from "components/Calendar/utils"
 import { useCalendar, CalendarState } from "components/Calendar/useCalendar"
 import "components/Calendar/index.scss"
+import LeftArrowIcon from "misc/icons/left-arrow.svg"
+import RightArrowIcon from "misc/icons/right-arrow.svg"
 
 const CONTAINER_WIDTH = 244 //px
 const COL_WIDTH = CONTAINER_WIDTH / 7 // 7 days in week
+const TOTAL_OF_DAYS_PER_SCREEN = 42 // 42 days per screen
 
 const Navigation = ({
   currentYear,
@@ -19,10 +22,10 @@ const Navigation = ({
       </div>
       <div className="flex">
         <button className="calendar-navigation__btn" onClick={setPreviousMonth}>
-          {"<"}
+          <LeftArrowIcon />
         </button>
         <button className="calendar-navigation__btn" onClick={setNextMonth}>
-          {">"}
+          <RightArrowIcon />
         </button>
       </div>
     </div>
@@ -42,6 +45,13 @@ const LocalDays = () => {
     </div>
   )
 }
+
+type DayPosition = "previous" | "current" | "next"
+
+type DaysType = {
+  number: number
+  position: DayPosition
+}[]
 
 const Days = ({
   currentYear,
@@ -68,65 +78,76 @@ const Days = ({
   const previousMonthStartLocalDay = new Date(currentYear, currentMonth - 1, 1).getDay()
   const previousMonthNumberOfDays = new Date(currentYear, currentMonth - 1, 0).getDate()
 
-  const daysInPreviousMonth = Array.from(Array(previousMonthStartLocalDay)).map(
-    (_, idx) => previousMonthNumberOfDays - previousMonthStartLocalDay + idx + 1
-  )
-  const daysInCurrentMonth = Array.from(Array(numberOfMonthDays)).map((_, idx) => idx + 1)
+  const daysInPreviousMonth = Array.from(Array(previousMonthStartLocalDay)).map((_, idx) => {
+    return { number: previousMonthNumberOfDays - previousMonthStartLocalDay + idx + 1, position: "previous" }
+  }) as DaysType
+  const daysInCurrentMonth = Array.from(Array(numberOfMonthDays)).map((_, idx) => {
+    return { number: idx + 1, position: "current" }
+  }) as DaysType
   const daysInNextMonth = Array.from(
     new Array(
-      42 - numberOfMonthDays - previousMonthStartLocalDay > 0 ? 42 - numberOfMonthDays - previousMonthStartLocalDay : 0
+      TOTAL_OF_DAYS_PER_SCREEN - numberOfMonthDays - previousMonthStartLocalDay > 0
+        ? TOTAL_OF_DAYS_PER_SCREEN - numberOfMonthDays - previousMonthStartLocalDay
+        : 0
     )
-  ).map((_, idx) => idx + 1)
+  ).map((_, idx) => {
+    return { number: idx + 1, position: "next" }
+  }) as DaysType
 
-  const getClassName = (day: number, month: "previous" | "current" | "next") => {
-    switch (month) {
+  const daysArray = [...daysInPreviousMonth, ...daysInCurrentMonth, ...daysInNextMonth]
+
+  const getClassName = (day: number, position: DayPosition) => {
+    let className = `days-item ${position} `
+    switch (position) {
       case "previous":
-        return selectedDay === day && currentMonth === selectedMonth + 1 ? "active" : ""
+        if (selectedDay === day && currentMonth === selectedMonth + 1) {
+          className += "active"
+        }
       case "current":
-        return currentYear === selectedYear && currentMonth === selectedMonth && selectedDay === day ? "active" : ""
+        if (currentYear === selectedYear && currentMonth === selectedMonth && selectedDay === day) {
+          className += "active"
+        }
       case "next":
-        return selectedDay === day && currentMonth === selectedMonth - 1 ? "active" : ""
+        if (selectedDay === day && currentMonth === selectedMonth - 1) {
+          className += "active"
+        }
+    }
+    return className
+  }
+
+  const getHandler = ({ position, day }: { position: DayPosition; day: number }) => {
+    switch (position) {
+      case "previous":
+        return () => {
+          setSelectedDate({ day, month: currentMonth - 1, year: currentYear })
+          setPreviousMonth()
+        }
+      case "current":
+        return () => {
+          setSelectedDate({ day, month: currentMonth, year: currentYear })
+        }
+      case "next":
+        return () => {
+          setSelectedDate({ day, month: currentMonth + 1, year: currentYear })
+          setNextMonth()
+        }
     }
   }
 
   return (
     <div className="days-container">
-      {daysInPreviousMonth.map((day, idx) => (
-        <div key={idx} className="days-item__container" style={{ minWidth: COL_WIDTH, width: COL_WIDTH }}>
-          <button
-            className={`days-item previous ${getClassName(day, "previous")}`}
-            onClick={() => {
-              setSelectedDate({ day, month: currentMonth - 1, year: currentYear })
-              setPreviousMonth()
-            }}
-          >
-            {day}
-          </button>
-        </div>
-      ))}
-      {daysInCurrentMonth.map((day, idx) => (
-        <div key={idx} className="days-item__container" style={{ minWidth: COL_WIDTH, width: COL_WIDTH }}>
-          <button
-            className={`days-item current ${getClassName(day, "current")}`}
-            onClick={() => setSelectedDate({ day, month: currentMonth, year: currentYear })}
-          >
-            {day}
-          </button>
-        </div>
-      ))}
-      {daysInNextMonth.map((day, idx) => (
-        <div key={idx} className="days-item__container" style={{ minWidth: COL_WIDTH, width: COL_WIDTH }}>
-          <button
-            className={`days-item next ${getClassName(day, "next")}`}
-            onClick={() => {
-              setSelectedDate({ day, month: currentMonth + 1, year: currentYear })
-              setNextMonth()
-            }}
-          >
-            {day}
-          </button>
-        </div>
-      ))}
+      {daysArray.map((day, idx) => {
+        return (
+          <div key={idx} className="days-item__container" style={{ minWidth: COL_WIDTH, width: COL_WIDTH }}>
+            <button
+              className={getClassName(day.number, day.position)}
+              onClick={getHandler({ position: day.position, day: day.number })}
+            >
+              {day.number}
+            </button>
+          </div>
+        )
+      })}
     </div>
   )
 }
@@ -145,7 +166,7 @@ export const Calendar = () => {
   } = useCalendar()
 
   return (
-    <div>
+    <div className="calendar">
       <div style={{ width: CONTAINER_WIDTH }}>
         <Navigation
           currentYear={currentYear}

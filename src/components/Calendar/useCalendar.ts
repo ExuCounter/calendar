@@ -31,17 +31,35 @@ export const useCalendar = (): CalendarState => {
   const [numberOfMonthDays, setNumberOfMonthDays] = useState<number>(0)
 
   const setSelectedDate = ({ year, month, day }: SelectedDate) => {
-    setSelectedMonth(month)
-    setSelectedYear(year)
-    setSelectedDay(day)
+    if (month > 12) {
+      setNextSelectedYear()
+      setNextMonth()
+    } else if (month < 1) {
+      setPreviousMonth()
+      setPreviousSelectedYear()
+    } else {
+      setSelectedMonth(month)
+      setSelectedYear(year)
+      setSelectedDay(day)
+    }
   }
 
-  const setNextYear = () => {
+  const setNextSelectedYear = () => {
+    setSelectedYear(year => year + 1)
+    setSelectedMonth(1)
+  }
+
+  const setPreviousSelectedYear = () => {
+    setSelectedYear(year => year - 1)
+    setCurrentMonth(12)
+  }
+
+  const setNextCurrentYear = () => {
     setCurrentYear(year => year + 1)
     setCurrentMonth(1)
   }
 
-  const setPreviousYear = () => {
+  const setPreviousCurrentYear = () => {
     setCurrentYear(year => year - 1)
     setCurrentMonth(12)
   }
@@ -49,13 +67,13 @@ export const useCalendar = (): CalendarState => {
   const setNextMonth = () => {
     const nextMonth = currentMonth + 1
     if (nextMonth <= 12) setCurrentMonth(nextMonth)
-    if (nextMonth > 12) setNextYear()
+    if (nextMonth > 12) setNextCurrentYear()
   }
 
   const setPreviousMonth = () => {
     const previousMonth = currentMonth - 1
     if (previousMonth >= 1) setCurrentMonth(previousMonth)
-    if (previousMonth < 1) setPreviousYear()
+    if (previousMonth < 1) setPreviousCurrentYear()
   }
 
   useEffect(() => {

@@ -32,7 +32,10 @@ module.exports = {
           { loader: "sass-loader" },
         ],
       },
-      { test: /\.svg$/, use: "svg-url-loader" },
+      {
+        test: /\.svg$/,
+        use: ["@svgr/webpack"],
+      },
       { test: /\.(gif|png|jpe?g|svg)$/i, use: "image-webpack-loader" },
       { test: /\.css$/, use: ["style-loader", "css-loader"] },
     ],
