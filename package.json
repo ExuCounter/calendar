@@ -1,7 +1,9 @@
 {
   "name": "small-google-calendar",
-  "version": "1.0.1",
+  "version": "1.0.2",
+  "main": "./dist/index.js",
   "author": "Volodymyr Potiichuk <volodymyrpotiichuk@gmail.com",
+  "license": "MIT",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",

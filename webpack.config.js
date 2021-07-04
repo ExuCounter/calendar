@@ -2,7 +2,7 @@ const path = require("path")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 
 module.exports = {
-  entry: "./src/index.tsx",
+  entry: "./src/index.ts",
   devtool: "inline-source-map",
   devServer: {
     port: 3000,
@@ -42,7 +42,7 @@ module.exports = {
   },
   plugins: [new HtmlWebpackPlugin({ template: "./public/index.html" })],
   output: {
-    filename: "index.bundle.js",
+    filename: "index.js",
     path: path.resolve(__dirname, "dist"),
     clean: true,
   },
