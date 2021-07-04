@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "declaration": true,
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
+    "outDir": "dist",
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -17,5 +19,6 @@
     "baseUrl": "src",
     "noImplicitAny": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }
