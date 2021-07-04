@@ -1,6 +1,6 @@
 {
   "name": "small-google-calendar",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Volodymyr Potiichuk <volodymyrpotiichuk@gmail.com",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
