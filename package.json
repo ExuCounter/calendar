@@ -1,6 +1,6 @@
 {
   "name": "small-google-calendar",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "./dist/index.js",
   "author": "Volodymyr Potiichuk <volodymyrpotiichuk@gmail.com",
   "license": "MIT",
