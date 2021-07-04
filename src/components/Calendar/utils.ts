@@ -1,4 +1,4 @@
-import { LocalDay, Month } from "components/Calendar/types"
+import { LocalDay, Month } from "./types"
 
 export const getYear = (date: Date) => date.getFullYear()
 export const getMonth = (date: Date) => date.getMonth() + 1

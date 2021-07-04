@@ -1,4 +1,4 @@
-import { useMonth } from "components/Calendar/hooks/useMonth"
+import { useMonth } from "../hooks/useMonth"
 
 export type DayPosition = "previous" | "current" | "next"
 

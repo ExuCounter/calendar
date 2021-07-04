@@ -1,12 +1,12 @@
 import React, { PropsWithChildren } from "react"
-import { CalendarContextProvider } from "components/Calendar/CalendarContext"
-import { getLocalDayName, getMonthName } from "components/Calendar/utils"
-import { useCalendar, CalendarHookState } from "components/Calendar/hooks/useCalendar"
-import { useShowingDays, DayPosition } from "components/Calendar/hooks/useShowingDays"
-import LeftArrowIcon from "misc/icons/left-arrow.svg"
-import RightArrowIcon from "misc/icons/right-arrow.svg"
-import { isFunction } from "components/shared/utils"
-import "components/Calendar/index.scss"
+import { CalendarContextProvider } from "./CalendarContext"
+import { getLocalDayName, getMonthName } from "./utils"
+import { useCalendar, CalendarHookState } from "./hooks/useCalendar"
+import { useShowingDays, DayPosition } from "./hooks/useShowingDays"
+import LeftArrowIcon from "../../misc/icons/left-arrow.svg"
+import RightArrowIcon from "../../misc/icons/right-arrow.svg"
+import { isFunction } from "../shared/utils"
+import "./index.scss"
 
 const CONTAINER_WIDTH = 244 //px
 const COL_WIDTH = CONTAINER_WIDTH / 7 // 7 days in week

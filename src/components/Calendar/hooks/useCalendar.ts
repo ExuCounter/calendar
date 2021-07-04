@@ -1,8 +1,8 @@
 import { useState } from "react"
-import { isFunction } from "components/shared/utils"
-import { ActionWithPayload, ActionWithoutPayload } from "components/shared/actions"
-import { getYear, getMonth, getDay, getDateFromNumbers } from "components/Calendar/utils"
-import { DateNumberType } from "components/Calendar/types"
+import { isFunction } from "../../shared/utils"
+import { ActionWithPayload, ActionWithoutPayload } from "../../shared/actions"
+import { getYear, getMonth, getDay, getDateFromNumbers } from "../utils"
+import { DateNumberType } from "../types"
 
 type Actions =
   | ActionWithPayload<"setSelectedDate", { date: DateNumberType; onChange?: (date: Date) => void }>
