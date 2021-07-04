@@ -117,7 +117,7 @@ const Days = ({
   )
 }
 
-type CalendarProps = PropsWithChildren<{
+export type CalendarProps = PropsWithChildren<{
   show?: boolean
   onClose: () => void
   onChange?: (date: Date) => void
