@@ -1,24 +1,11 @@
 import { useState } from "react"
-import { Calendar } from "components/Calendar"
+import { Calendar } from "components/Calendar/Calendar"
 
 const App = () => {
   const [show, setShow] = useState<boolean>(false)
+  const [date, setDate] = useState<Date>()
 
-  return (
-    <Calendar show={show} onClose={() => setShow(false)}>
-      {calendarDate => {
-        return (
-          <input
-            type="text"
-            value={`${calendarDate.day}/${calendarDate.month}/${calendarDate.year}`}
-            onClick={() => {
-              setShow(true)
-            }}
-          />
-        )
-      }}
-    </Calendar>
-  )
+  return <Calendar onChange={date => console.log(date)} onClose={() => setShow(false)} />
 }
 
 export default App

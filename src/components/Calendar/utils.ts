@@ -1,5 +1,10 @@
 import { LocalDay, Month } from "components/Calendar/types"
 
+export const getYear = (date: Date) => date.getFullYear()
+export const getMonth = (date: Date) => date.getMonth() + 1
+export const getDay = (date: Date) => date.getUTCDate()
+export const getDateFromNumbers = (year: number, month: number, day: number) => new Date(year, month - 1, day)
+
 export const getLocalDayName = (number: number, short?: boolean) => {
   switch (number) {
     case LocalDay.Monday:

@@ -6,7 +6,6 @@ import { useShowingDays, DayPosition } from "components/Calendar/hooks/useShowin
 import LeftArrowIcon from "misc/icons/left-arrow.svg"
 import RightArrowIcon from "misc/icons/right-arrow.svg"
 import { isFunction } from "components/shared/utils"
-import { DateType } from "components/Calendar/types"
 import "components/Calendar/index.scss"
 
 const CONTAINER_WIDTH = 244 //px
@@ -51,34 +50,44 @@ const Days = ({
   selectedDay,
   selectedYear,
   onClose,
+  onChange,
   handleAction,
 }: Pick<
   CalendarHookState,
   "showingYear" | "showingMonth" | "selectedMonth" | "selectedDay" | "selectedYear" | "handleAction"
-> & { onClose: () => void }) => {
+> & { onClose: () => void; onChange?: (date: Date) => void }) => {
   const showingDays = useShowingDays({ showingYear, showingMonth })
 
-  const getClassName = ({ position, day }: { position: DayPosition; day: number }) => {
+  const getClassName = (position: DayPosition, day: number) => {
     const isActive = showingYear === selectedYear && showingMonth === selectedMonth && selectedDay === day
     const isCurrentPosition = position === "current"
 
     return `days-item ${position} ${isActive && isCurrentPosition ? "active" : ""}`
   }
 
-  const getHandler = ({ position, day }: { position: DayPosition; day: number }) => {
+  const getHandler = (position: DayPosition, day: number) => {
     switch (position) {
       case "previous":
         return () => {
-          handleAction({ action: "setSelectedDate", payload: { day, month: showingMonth - 1, year: showingYear } })
+          handleAction({
+            action: "setSelectedDate",
+            payload: { date: { year: showingYear, month: showingMonth + 1, day }, onChange },
+          })
           handleAction({ action: "setPreviousShowingMonth" })
         }
       case "current":
         return () => {
-          handleAction({ action: "setSelectedDate", payload: { day, month: showingMonth, year: showingYear } })
+          handleAction({
+            action: "setSelectedDate",
+            payload: { date: { year: showingYear, month: showingMonth, day }, onChange },
+          })
         }
       case "next":
         return () => {
-          handleAction({ action: "setSelectedDate", payload: { day, month: showingMonth + 1, year: showingYear } })
+          handleAction({
+            action: "setSelectedDate",
+            payload: { date: { year: showingYear, month: showingMonth - 1, day }, onChange },
+          })
           handleAction({ action: "setNextShowingMonth" })
         }
     }
@@ -87,12 +96,15 @@ const Days = ({
   return (
     <div className="days-container">
       {showingDays.map(({ day, position }, idx) => {
+        const handler = getHandler(position, day)
+        const className = getClassName(position, day)
+
         return (
           <div key={idx} className="days-item__container" style={{ minWidth: COL_WIDTH, width: COL_WIDTH }}>
             <button
-              className={getClassName({ position, day })}
+              className={className}
               onClick={() => {
-                getHandler({ position, day })()
+                handler()
                 onClose()
               }}
             >
@@ -106,19 +118,20 @@ const Days = ({
 }
 
 type CalendarProps = PropsWithChildren<{
-  show: boolean
+  show?: boolean
   onClose: () => void
-  children: ((date: DateType) => React.ReactElement) | React.ReactNode
+  onChange?: (date: Date) => void
+  children?: ((date: Date) => React.ReactElement) | React.ReactNode
 }>
 
-export const Calendar = ({ show = false, onClose, children }: CalendarProps) => {
-  const { showingYear, showingMonth, selectedDay, selectedMonth, selectedYear, handleAction } = useCalendar()
-  const date = { day: selectedDay, month: selectedMonth, year: selectedYear }
+export const Calendar = ({ show = true, onClose, onChange, children }: CalendarProps) => {
+  const { showingYear, showingMonth, selectedDay, selectedMonth, selectedYear, selectedDate, handleAction } =
+    useCalendar()
 
   return (
     <div className="calendar-container">
-      <CalendarContextProvider value={{ date }}>
-        <div className="calendar-children">{children && isFunction(children) ? children({ ...date }) : children}</div>
+      <CalendarContextProvider value={selectedDate}>
+        <div className="calendar-children">{children && isFunction(children) ? children(selectedDate) : children}</div>
         {show && (
           <div className="calendar calendar-placement-left">
             <div style={{ width: CONTAINER_WIDTH }}>
@@ -132,6 +145,7 @@ export const Calendar = ({ show = false, onClose, children }: CalendarProps) => 
                 selectedYear={selectedYear}
                 handleAction={handleAction}
                 onClose={onClose}
+                onChange={onChange}
               />
             </div>
           </div>
