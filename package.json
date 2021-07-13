@@ -1,6 +1,6 @@
 {
   "name": "calendar-new",
-  "version": "1.0.0",
+  "version": "1.0.23",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -8,6 +8,9 @@
     "build:lib": "lerna run build --scope='small-google-calendar'",
     "release": "lerna publish --registry https://www.npmjs.com/"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "keywords": [],
   "author": "",
   "license": "MIT",

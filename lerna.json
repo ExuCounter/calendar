@@ -1,6 +1,14 @@
 {
-  "packages": [
-    "packages/*"
-  ],
-  "version": "0.0.0"
+  "packages": ["packages/*"],
+  "publish": {
+    "registry": "https://npm.prosapient.com"
+  },
+  "version": "1.0.23",
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "command": {
+    "publish": {
+      "message": "chore(release): publish %s"
+    }
+  }
 }
