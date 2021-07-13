@@ -1,7 +1,6 @@
 {
   "name": "small-google-calendar-dev",
-  "version": "1.0.27",
-  "private": true,
+  "version": "1.0.32",
   "license": "MIT",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
