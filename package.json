@@ -7,7 +7,7 @@
   "scripts": {
     "start": "lerna run --parallel start",
     "build:lib": "lerna run build --scope='small-google-calendar'",
-    "release": "lerna publish --registry https://www.npmjs.com/"
+    "release": "lerna publish --registry https://registry.npmjs.org"
   },
   "workspaces": [
     "packages/*"
