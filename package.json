@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "1.0.22",
+  "version": "0.0.0",
   "main": "./dist/index.js",
   "author": "Volodymyr Potiichuk <volodymyrpotiichuk@gmail.com",
   "license": "MIT",

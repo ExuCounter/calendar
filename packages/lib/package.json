@@ -4,6 +4,7 @@
   "description": "Small google calendar",
   "author": "Vova Potiichuk <exucounter777@gmail.com>",
   "homepage": "",
+  "private": false,
   "license": "ISC",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
