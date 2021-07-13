@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "declaration": true,
+    "module": "esnext",
+    "target": "es2019",
+    "moduleResolution": "node",
+    "lib": ["dom", "esnext"],
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true,
+    /* Advanced Options */
+    "skipLibCheck": true /* Skip type checking of declaration files. */,
+    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
+  }
+}
