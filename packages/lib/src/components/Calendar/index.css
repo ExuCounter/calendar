@@ -23,14 +23,7 @@ body {
 
 .calendar {
   padding: 0.5rem;
-  position: absolute;
   background-color: #fff;
-}
-
-.calendar-placement-left {
-  transform: translateY(100%);
-  bottom: -10px;
-  left: 0;
 }
 
 .calendar-container {

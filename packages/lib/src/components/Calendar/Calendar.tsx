@@ -181,7 +181,7 @@ export const Calendar = ({
           {children && isFunction(children) ? children(selectedDate) : children}
         </div>
         {show && (
-          <div className="calendar calendar-placement-left">
+          <div className="calendar">
             <div style={{ width: CONTAINER_WIDTH }}>
               <Navigation
                 showingYear={showingYear}

@@ -1,1 +1,1 @@
-export { Calendar, CalendarProps } from './components/Calendar/Calendar'
+export { Calendar, CalendarProps } from './src/components/Calendar/Calendar'
