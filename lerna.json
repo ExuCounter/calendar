@@ -1,9 +1,11 @@
 {
-  "packages": ["packages/*"],
+  "packages": [
+    "packages/*"
+  ],
   "publish": {
     "registry": "https://npm.prosapient.com"
   },
-  "version": "1.0.32",
+  "version": "1.0.33",
   "npmClient": "yarn",
   "useWorkspaces": true,
   "command": {
