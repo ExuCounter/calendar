@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,500&display=swap');
+
+$gray-200: #3c4043;
+$gray-100: #70757a;
+$gray-50: #f1f3f4;
+
+$blue-100: #185abc;
+$blue-50: #d2e3fc;
+
+$white: #fff;
+
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+html {
+  font-size: 10px;
+}
+
+body {
+  font-size: 100%;
+}
+
+.calendar {
+  padding: 0.5rem;
+  background-color: $white;
+  &-container {
+    position: relative;
+  }
+  &-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    font-weight: 500;
+    color: $gray-200;
+    padding: 0 1rem;
+    margin: 0.5rem 0rem 0.8rem 0rem;
+    > div {
+      align-items: center;
+      display: flex;
+      &:nth-child(2) {
+        svg {
+          color: $gray-200;
+          fill: $gray-200;
+        }
+        span,
+        svg {
+          width: 1.6rem;
+          height: 1.6rem;
+        }
+      }
+    }
+    &__year,
+    &__month {
+      font-size: 1.3rem;
+    }
+    &__month {
+      margin-right: 0.5rem;
+    }
+    &__btn {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      display: flex;
+      align-items: center;
+      transition: background-color 100ms linear;
+      border-radius: 50%;
+      padding: 0.25rem;
+      &:first-child {
+        margin-right: 1rem;
+      }
+      &:hover {
+        background-color: rgba(32, 33, 36, 0.039);
+      }
+    }
+  }
+}
+
+.local-days {
+  display: flex;
+  &__name {
+    padding: 0.5rem;
+    text-align: center;
+    color: $gray-100;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+}
+
+.days {
+  &-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &-item {
+    text-align: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 2.4rem;
+    height: 2.4rem;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 100ms linear;
+    outline: none;
+    &__container {
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+    }
+    &.active {
+      background-color: $blue-50 !important;
+      color: $blue-100 !important;
+    }
+    &.previous,
+    &.next {
+      color: $gray-100;
+    }
+    &.current {
+      color: $gray-200;
+    }
+    &:hover {
+      background-color: $gray-50;
+    }
+  }
+}

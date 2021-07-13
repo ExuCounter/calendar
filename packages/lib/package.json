@@ -11,14 +11,22 @@
     "*"
   ],
   "scripts": {
-    "start": "tsc --build --watch",
-    "build": "tsc --build tsconfig.json && cp src/components/Calendar/index.css dist/src/components/Calendar/index.css"
+    "css:build": "node-sass src/components/Calendar/index.scss -o dist/src/components/Calendar",
+    "css:watch": "node-sass src/components/Calendar/index.scss -wo dist/src/components/Calendar",
+    "start": "tsc-watch --build --onFirstSuccess \"yarn css:build\" --onSuccess \"yarn css:watch\"",
+    "build": "tsc --build tsconfig.json && yarn css:build"
   },
   "devDependencies": {
+    "@types/node-sass": "^4.11.2",
     "@types/react": "17.0.14",
+    "node-sass": "^6.0.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "tsc-watch": "4.4.0",
     "typescript": "4.3.5"
   },
-  "gitHead": "bed68f73273ec6f76318737eaf59d82d2acc5427"
+  "gitHead": "bed68f73273ec6f76318737eaf59d82d2acc5427",
+  "dependencies": {
+    "react-ionicons": "4.2.0"
+  }
 }

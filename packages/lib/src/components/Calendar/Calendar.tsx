@@ -3,9 +3,11 @@ import { CalendarContextProvider } from './CalendarContext'
 import { getLocalDayName, getMonthName } from './utils'
 import { useCalendar, CalendarHookState } from './hooks/useCalendar'
 import { useShowingDays, DayPosition } from './hooks/useShowingDays'
-// import LeftArrowIcon from "../../misc/icons/left-arrow.svg"
-// import RightArrowIcon from "../../misc/icons/right-arrow.svg"
 import { isFunction } from '../shared/utils'
+import {
+  ChevronBackOutline as ArrowBack,
+  ChevronForwardOutline as ArrowForward,
+} from 'react-ionicons'
 import './index.css'
 
 const CONTAINER_WIDTH = 244 //px
@@ -20,24 +22,24 @@ const Navigation = ({
   'showingYear' | 'showingMonth' | 'handleAction'
 >) => (
   <div className="calendar-navigation">
-    <div className="flex">
+    <div>
       <span className="calendar-navigation__month">
         {getMonthName(showingMonth)}
       </span>
       <span className="calendar-navigation__year">{showingYear}</span>
     </div>
-    <div className="flex">
+    <div>
       <button
         className="calendar-navigation__btn"
         onClick={() => handleAction({ action: 'setPreviousShowingMonth' })}
       >
-        {'<'}
+        <ArrowBack />
       </button>
       <button
         className="calendar-navigation__btn"
         onClick={() => handleAction({ action: 'setNextShowingMonth' })}
       >
-        {'>'}
+        <ArrowForward />
       </button>
     </div>
   </div>
