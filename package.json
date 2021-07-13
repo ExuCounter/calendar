@@ -1,8 +1,9 @@
 {
-  "name": "calendar-new",
+  "name": "small-google-calendar",
   "version": "1.0.22",
-  "description": "",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "author": "Volodymyr Potiichuk <volodymyrpotiichuk@gmail.com",
+  "license": "MIT",
   "scripts": {
     "start": "lerna run --parallel start",
     "build:lib": "lerna run build --scope='small-google-calendar'",
@@ -12,8 +13,6 @@
     "packages/*"
   ],
   "keywords": [],
-  "author": "",
-  "license": "MIT",
   "devDependencies": {
     "lerna": "^3.22.1",
     "react": "17.0.2",
