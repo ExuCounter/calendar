@@ -28,6 +28,7 @@
   },
   "gitHead": "bed68f73273ec6f76318737eaf59d82d2acc5427",
   "dependencies": {
-    "react-ionicons": "4.2.0"
+    "react-ionicons": "4.2.0",
+    "styled-components": "5.3.0"
   }
 }
