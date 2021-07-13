@@ -1,7 +1,5 @@
 {
-  "packages": [
-    "packages/*"
-  ],
+  "packages": ["packages/*"],
   "publish": {
     "registry": "https://npm.prosapient.com"
   },
