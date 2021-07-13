@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "start": "tsc --build --watch",
-    "build": "tsc --build tsconfig.json"
+    "build": "tsc --build tsconfig.json && cp components/Calendar/index.css dist/components/Calendar/index.css"
   },
   "devDependencies": {
     "@types/react": "17.0.14",
