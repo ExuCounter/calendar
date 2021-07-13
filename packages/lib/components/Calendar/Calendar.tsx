@@ -71,7 +71,7 @@ const Days = ({
   | 'selectedDay'
   | 'selectedYear'
   | 'handleAction'
-> & { onClose: () => void; onChange?: (date: Date) => void }) => {
+> & { onClose?: () => void; onChange?: (date: Date) => void }) => {
   const showingDays = useShowingDays({ showingYear, showingMonth })
 
   const getClassName = (position: DayPosition, day: number) => {
@@ -139,7 +139,7 @@ const Days = ({
               className={className}
               onClick={() => {
                 handler()
-                onClose()
+                isFunction(onClose) && onClose()
               }}
             >
               {day}
