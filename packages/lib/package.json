@@ -1,6 +1,6 @@
 {
   "name": "small-google-calendar",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Small google calendar",
   "author": "Vova Potiichuk <exucounter777@gmail.com>",
   "homepage": "",
@@ -26,7 +26,7 @@
     "tsc-watch": "4.4.0",
     "typescript": "4.3.5"
   },
-  "gitHead": "e1ec8d9607adb3a907d2fa64c0fdca87e1844a50",
+  "gitHead": "ac8fee96d7ffaf7210fd2b1acbc782e9ef244bb4",
   "dependencies": {
     "react-ionicons": "4.2.0",
     "styled-components": "5.3.0"
