@@ -29,5 +29,6 @@
   "dependencies": {
     "react-ionicons": "4.2.0",
     "styled-components": "5.3.0"
-  }
+  },
+  "gitHead": "4fc31b334f7788ca7acb836a6515013285f9c8ba"
 }
