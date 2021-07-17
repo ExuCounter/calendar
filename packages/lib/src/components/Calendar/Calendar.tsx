@@ -62,7 +62,6 @@ const Days = ({
   selectedMonth,
   selectedDay,
   selectedYear,
-  onClose,
   onChange,
   handleAction,
 }: Pick<
@@ -73,7 +72,8 @@ const Days = ({
   | 'selectedDay'
   | 'selectedYear'
   | 'handleAction'
-> & { onClose?: () => void; onChange?: (date: Date) => void }) => {
+> &
+  Pick<CalendarProps, 'onChange'>) => {
   const showingDays = useShowingDays({ showingYear, showingMonth })
 
   const getClassName = (position: DayPosition, day: number) => {
@@ -137,13 +137,7 @@ const Days = ({
             className="days-item__container"
             style={{ minWidth: COL_WIDTH, width: COL_WIDTH }}
           >
-            <button
-              className={className}
-              onClick={() => {
-                handler()
-                isFunction(onClose) && onClose()
-              }}
-            >
+            <button className={className} onClick={() => handler()}>
               {day}
             </button>
           </div>
@@ -155,14 +149,12 @@ const Days = ({
 
 export type CalendarProps = PropsWithChildren<{
   show?: boolean
-  onClose?: () => void
   onChange?: (date: Date) => void
   children?: ((date: Date) => React.ReactElement) | React.ReactNode
 }>
 
 export const Calendar = ({
   show = true,
-  onClose,
   onChange,
   children,
 }: CalendarProps) => {
@@ -198,7 +190,6 @@ export const Calendar = ({
                 selectedDay={selectedDay}
                 selectedYear={selectedYear}
                 handleAction={handleAction}
-                onClose={onClose}
                 onChange={onChange}
               />
             </div>
