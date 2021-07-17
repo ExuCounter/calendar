@@ -70,6 +70,34 @@ function App() {
 
 ![Open calendar only when you need it GIF](https://raw.githubusercontent.com/ExuCounter/calendar/master/packages/dev/example2.gif)
 
+## `Format your date with whatever you want`
+
+```js
+import React, { useState } from 'react'
+import { Calendar } from 'small-google-calendar'
+import { format } from 'date-fns'
+
+function App() {
+  const [show, setShow] = useState(false)
+  const [date, setDate] = useState(new Date())
+
+  return (
+    <div>
+      <input value={format(date, 'dd/MM/yyyy')} onClick={() => setShow(true)} />
+      <Calendar
+        show={show}
+        onChange={(value) => {
+          setDate(value)
+          setShow(false)
+        }}
+      />
+    </div>
+  )
+}
+```
+
+![Format your date with whatever you want GIF](https://raw.githubusercontent.com/ExuCounter/calendar/master/packages/dev/example3.gif)
+
 ## `Typescript support`
 
 You can also import props by calendar
