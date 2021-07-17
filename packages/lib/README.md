@@ -24,7 +24,7 @@ function App() {
 }
 ```
 
-## `Usage without state`
+## `Simple usage without state`
 
 ```js
 import React from 'react'
@@ -40,6 +40,8 @@ function App() {
   )
 }
 ```
+
+![Simple usage GIF](https://raw.githubusercontent.com/ExuCounter/calendar/master/packages/dev/example1.gif)
 
 ## `Open calendar only when you need it`
 
@@ -65,6 +67,8 @@ function App() {
   )
 }
 ```
+
+![Open calendar only when you need it GIF](https://raw.githubusercontent.com/ExuCounter/calendar/master/packages/dev/example2.gif)
 
 ## `Typescript support`
 
