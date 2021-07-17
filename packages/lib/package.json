@@ -1,6 +1,6 @@
 {
   "name": "small-google-calendar",
-  "version": "1.0.3",
+  "version": "1.0.0",
   "description": "Small google calendar",
   "author": "Vova Potiichuk <exucounter777@gmail.com>",
   "homepage": "",
@@ -30,5 +30,5 @@
     "react-ionicons": "4.2.0",
     "styled-components": "5.3.0"
   },
-  "gitHead": "4fc31b334f7788ca7acb836a6515013285f9c8ba"
+  "gitHead": "49c3326e49746527e9fc8efca9a525e184424bbf"
 }
