@@ -1,6 +1,6 @@
 {
   "name": "small-google-calendar-dev",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "license": "MIT",
   "private": "true",
   "dependencies": {
