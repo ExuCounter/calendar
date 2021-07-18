@@ -11,8 +11,9 @@ const inputStyles = {
 }
 
 function App() {
-  const [show, setShow] = useState(false)
+  const [show, setShow] = useState(true)
   const [date, setDate] = useState(new Date())
+  const [sizing, setSizing] = useState<'sm' | 'md' | 'lg'>('md')
 
   return (
     <div style={{ padding: '15px' }}>
@@ -21,8 +22,12 @@ function App() {
         onClick={() => setShow(true)}
         style={{ ...inputStyles }}
       />
+      {['sm', 'md', 'lg'].map((text) => (
+        <button onClick={() => setSizing(text as any)}>{text}</button>
+      ))}
       <Calendar
         show={show}
+        sizing={sizing}
         onChange={(value) => {
           setDate(value)
           setShow(false)

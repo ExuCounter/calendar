@@ -1,12 +1,14 @@
-# Small calendar for selecting the date in a convenient way
+## Small calendar for selecting the date in a convenient way
 
-## `Import`
+### Zero dependencies, lightweight library.
+
+### `Import`
 
 ```js
 import { Calendar } from 'small-google-calendar'
 ```
 
-## `Simple usage with statefulness`
+### `Simple usage with statefulness`
 
 ```js
 import React, { useState } from 'react'
@@ -24,7 +26,7 @@ function App() {
 }
 ```
 
-## `Simple usage without state`
+### `Simple usage without state`
 
 ```js
 import React from 'react'
@@ -43,7 +45,7 @@ function App() {
 
 ![Simple usage GIF](https://raw.githubusercontent.com/ExuCounter/calendar/master/packages/dev/example1.gif)
 
-## `Open calendar only when you need it`
+### `Open calendar only when you need it`
 
 ```js
 import React, { useState } from 'react'
@@ -70,7 +72,7 @@ function App() {
 
 ![Open calendar only when you need it GIF](https://raw.githubusercontent.com/ExuCounter/calendar/master/packages/dev/example2.gif)
 
-## `Format your date with whatever you want`
+### `Format your date with whatever you want`
 
 ```js
 import React, { useState } from 'react'
@@ -98,7 +100,7 @@ function App() {
 
 ![Format your date with whatever you want GIF](https://raw.githubusercontent.com/ExuCounter/calendar/master/packages/dev/example3.gif)
 
-## `Typescript support`
+### `Typescript support`
 
 You can also import props by calendar
 
@@ -107,13 +109,15 @@ import { Calendar, CalendarProps } from 'small-google-calendar'
 ```
 
 ```js
-CalendarProps = PropsWithChildren<{
-  show?: boolean;
-  onChange?: (date: Date) => void;
-  children?: ((date: Date) => React.ReactElement) | React.ReactNode;
+export declare type Sizing = 'sm' | 'md' | 'lg';
+export declare type CalendarProps = PropsWithChildren<{
+    show?: boolean;
+    onChange?: (date: Date) => void;
+    children?: ((date: Date) => React.ReactElement) | React.ReactNode;
+    sizing?: Sizing;
 }>;
 ```
 
-## License
+### License
 
 [MIT](https://choosealicense.com/licenses/mit/)
