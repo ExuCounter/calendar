@@ -1,6 +1,6 @@
 {
   "name": "small-google-calendar-dev",
-  "version": "1.0.8",
+  "version": "1.0.10",
   "license": "MIT",
   "private": "true",
   "dependencies": {
@@ -15,7 +15,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
-    "small-google-calendar": "^1.0.9",
+    "small-google-calendar": "^1.0.10",
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1"
   },
